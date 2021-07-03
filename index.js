@@ -3,12 +3,8 @@ const bot = new Client({ intents: ''}); // isi intent yg di perlukan || fill int
 const PREFIX = `beta/`; //prefix 
 let GUILD_ID = ''; //masukkin guild id || your guild id
 
-bot.on('ready', async (message) => {
-    console.log(`${bot.user.tag}  online`);
-});
-
 bot.on('ready', async () => {
-
+  console.log(`${bot.user.tag}  online`);
   bot.application.commands.set([
     {
       name: 'ping',
