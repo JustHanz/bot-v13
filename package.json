@@ -1,7 +1,6 @@
 {
   "name": "djs-v13",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,6 +8,8 @@
   "author": "Han#9122",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^13.0.0-dev.985d4d6a438fc9123264f6a1c600f34fccc1825f"
+    "discord.js": "^13.0.1",
+    "dotenv": "^10.0.0",
+    "fs": "^0.0.1-security"
   }
 }

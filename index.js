@@ -1,39 +1,25 @@
-const { Client, Util, MessageEmbed,MessageActionRow, MessageButton } = require("discord.js");
-const bot = new Client({ intents: ''}); // isi intent yg di perlukan || fill intent that u needs
-const PREFIX = `beta/`; //prefix 
-let GUILD_ID = ''; //masukkin guild id || your guild id
+const { Client, Intents,Collection } = require('discord.js');
+const fs = require('fs')
+require("dotenv").config();
 
-bot.on('ready', async () => {
-  console.log(`${bot.user.tag}  online`);
-  bot.application.commands.set([
-    {
-      name: 'ping',
-      description: "Get the bot's ping!"
-    }
-  ], GUILD_ID) 
- await console.log(`Slash Commands working`);
-})
-bot.on('interaction', (interaction) => {
-  if(!interaction.isCommand()) return
-  if(interaction.commandName === 'ping') {
-    interaction.reply({ content: "Pong!"})
-  }
- 
-})
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+client.commands = new Collection();
 
-bot.on("message", async (message) => {
-    if (!message.content.startsWith(PREFIX)) return;
-    let command = message.content.toLowerCase().split(" ")[0];
-    command = command.slice(PREFIX.length);
-    if (command === "pong") return message.channel.send(`ping`)
-    if (command === 'ping') {
-      const button = new MessageButton()
-			.setCustomID('primary')
-			.setLabel('Press button')
-			.setStyle('PRIMARY');
-  
-      message.channel.send({ content: 'Pong!',components: [[button]]});
-    }
-});
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 
-bot.login(`bot toket`); // masukin bot token  || fill your bot token here
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	client.commands.set(command.name, command);
+}
+
+for (const file of eventFiles) {
+	const event = require(`./events/${file}`);
+	if (event.once) {
+		client.once(event.name, (...args) => event.execute(...args, client));
+	} else {
+		client.on(event.name, (...args) => event.execute(...args, client));
+	}
+}
+
+client.login(process.env.token)
