@@ -2,7 +2,7 @@ require("dotenv").config();
 module.exports = {
 	name: 'messageCreate',
 	execute(message, client) {
-	    const prefix= process.env.prefix
+        const prefix= process.env.prefix;
         if (!message.content.startsWith(prefix) || message.author.bot) return;
 
         const args = message.content.slice(prefix.length).trim().split(/ +/);
@@ -16,6 +16,5 @@ module.exports = {
             console.error(error);
             message.reply('there was an error trying to execute that command!');
         }
-		console.log(`${message.author.tag} in #${message.channel.name} sent: ${message.content}`);
 	},
 };
