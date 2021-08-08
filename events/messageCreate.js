@@ -2,7 +2,7 @@ require("dotenv").config();
 module.exports = {
 	name: 'messageCreate',
 	execute(message, client) {
-		const prefix= process.env.prefix
+	    const prefix= process.env.prefix
         if (!message.content.startsWith(prefix) || message.author.bot) return;
 
         const args = message.content.slice(prefix.length).trim().split(/ +/);
